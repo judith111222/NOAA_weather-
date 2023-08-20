@@ -1,0 +1,37 @@
+about the dataset:
+The National Oceanic and Atmospheric Administration (NOAA) has curated a public dataset sourced from the USAF Climatology Center,
+offering global data collected from over 9000 stations. This comprehensive dataset spans GSOD data from 1929 to the present, 
+with daily averages encompassing a range of weather elements, 
+such as temperature, pressure, wind speed, precipitation, and more, and is updated daily.
+
+About code: The task is for Google Data Analytics Certification Big Query SQL practice. 
+
+Task 1: What are the average temperature in June 2020 and wind speed in December 2020?
+
+-- Use the IF function to replace 9999.9 values, which the dataset description explains is the default value when the temperature is missing, with NULLs instead.
+-- Use the IF function to replace 999.9 values, which the dataset description explains is the default value when wind speed is missing, with NULLs instead.
+-- Use the IF function to replace 99.99 values, which the dataset description explains is the default value when precipitation is missing, with NULLs instead.
+# First sorting data: 
+SELECT stn, date,
+  IF(temp=9999.9,NULL,temp) AS temperature,
+
+  IF(wdsp="999.9",NULL,CAST(wdsp AS Float64)) AS wind_speed,
+
+  IF(prcp=99.99,0,prcp) AS precipitation
+FROM `bigquery-public-data.noaa_gsod.gsod2020`
+WHERE stn="725030" -- La Guardia
+  OR stn="744860" -- JFK
+ORDER BY date DESC,
+  stn ASC
+
+# Find out the AVG and specific period
+
+SELECT
+    AVG(temperature)
+FROM
+    `your project name.demos.nyc_weather` 
+
+--remember to format the beginning syntax to your project name before running this query. You can view the full Table ID by clicking on the details tab of your new nyc_weather data table.
+
+WHERE
+    date BETWEEN '2020-06-01' AND '2020-06-30'
